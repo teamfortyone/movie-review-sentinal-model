@@ -8,14 +8,14 @@ from scripts.test_model import test_model
 
 def handle_args(args: dict):
     if args.get('train'):
-        training_data = args.get('data')
+        training_data = dataset.get_data_from_pickle(args.get('data'))
         iterations = args.get('iterations')
         model_name = args.get('model_name')
         train_model(training_data, iterations, model_name)
 
     if args.get('test'):
         testing_data = dataset.get_data_from_pickle(args.get('data'))
-        path_to_model = args.get('model')
+        path_to_model = args.get('name')
         limit = args.get('limit')
         correct_preds, accuracy = test_model(
             testing_data, path_to_model, limit)
@@ -35,7 +35,7 @@ def main():
 
     # Training
     train.add_argument(
-        '--iterations', help='Number of iterations to make for training')
+        '--iterations', type=int, help='Number of iterations to make for training')
     train.add_argument('--name', default='models/model_artifacts',
                        help='Name to save model as')
     train.add_argument('--data', default='data/train.pkl',
@@ -61,6 +61,6 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Keyboard Interrupt, Quitting...")
         sys.exit()
-    except Exception as e:
-        print(e)
-        sys.exit(1)
+    # except Exception as e:
+    #     print(e)
+    #     sys.exit(1)

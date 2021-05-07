@@ -33,15 +33,16 @@ def train_model(
         batch_sizes = compounding(
             4.0, 32.0, 1.001
         )  # A generator that yields infinite series of input numbers
-        for i in tqdm(range(iterations)):
+        for i in range(iterations):
+            print(f"\nIteration {i}")
             loss = {}
             random.shuffle(training_data)
             batches = minibatch(training_data, size=batch_sizes)
-            for batch in batches:
+            for batch in tqdm(batches):
                 text, labels = zip(*batch)
                 nlp.update(text, labels, drop=0.2,
                            sgd=optimizer, losses=loss)
 
     # Save model to disk
     with nlp.use_params(optimizer.averages):
-        nlp.to_disk("trained_models/{model_name}")
+        nlp.to_disk(f"trained_models/{model_name}")

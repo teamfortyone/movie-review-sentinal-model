@@ -145,6 +145,7 @@ data/
 
 # models
 models/
+trained_models/
 
 # vs code stuff
 .vscode
